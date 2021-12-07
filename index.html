@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WenMoon</title>
+</head>
+
+<body>
+    <div class="container">
+    <h1>WenMoon <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet"></h1>
+    
+    <div id="currencyCode">
+        <label for="currencyInput" id="currencyText">
+            Currency Code
+        </label>
+        <br>
+        <input type="text" id="currencyInput">
+    </div>
+    
+    <div>
+        <input type="submit" value="Send It &#128640" id="sendIt"> 
+    </div>
+
+    <table class="table table-bordered table-responsive table-hover white" id="results">
+        <tr id="tableHeaders" >
+            <th>Date</th>
+            <th>Pice</th>
+            <th>Volume</th>
+            <th>Market Cap</th>
+        </tr>
+    </table>
+    <div id="dataOne" class="white">
+    </div>
+    </div>
+
+
+</body>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$( document ).ready(function() {
+});
+
+$("#sendIt").click(function (e) {
+    var coin = $("#currencyInput").val();
+    var prices = [];
+    var volumes = [];
+    var marketcaps = [];
+    var dates = [];
+    $.ajax({
+                type: "GET",
+                url: "https://api.coingecko.com/api/v3/coins/"+ coin +"/market_chart?vs_currency=usd&days=7&interval=daily",
+                dataType: "json",
+                success: function (result,) {
+                    console.log(result);
+                    $.each(result, function (index, item) {
+                        switch(index) {
+                            case 'prices':
+                                prices.push(item);
+                                break;
+                            case 'market_caps':
+                                marketcaps.push(item);
+                                break;
+                            case 'total_volumes':
+                                volumes.push(item);
+                                break;
+                            
+                            }
+                    });
+                },
+                
+            });
+});
+
+function buildTables(itemArray, string){
+
+}
+</script>

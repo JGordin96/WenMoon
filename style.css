@@ -1,0 +1,46 @@
+body {
+    background: url(moon.jpeg);
+    background-size: cover;
+    background-position: 50% 10%;
+}
+
+.container {
+    max-width: 960px;
+    margin: auto;
+    /* border: 1px solid #333; */
+    padding: 20px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+#sendIt
+{
+    background-color: #6ec0ff;
+    border:black solid;
+    color: black;
+    padding: 10px 20px;
+    margin: 5px 2px;
+    cursor: pointer;
+}
+
+#sendIt:hover {
+    color: rgb(255, 255, 255);
+    background-color: #60afecf3;
+}
+
+h1 {
+    font-family: 'Roboto', sans-serif;
+    color: #ffffff;
+    -webkit-text-stroke: 1px rgb(0, 39, 165);
+}
+
+#currencyText {
+    font-weight: bold;
+    color:hsl(0, 0%, 0%);
+    background: rgba(255, 255, 255, 0.5)
+    
+
+}
+
+.white{
+    background: white;
+}
