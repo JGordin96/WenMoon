@@ -11,73 +11,93 @@
 
 <body>
     <div class="container">
-    <h1>WenMoon <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet"></h1>
-    
-    <div id="currencyCode">
-        <label for="currencyInput" id="currencyText">
-            Currency Code
-        </label>
-        <br>
-        <input type="text" id="currencyInput">
-    </div>
-    
-    <div>
-        <input type="submit" value="Send It &#128640" id="sendIt"> 
-    </div>
+        <h1>WenMoon
+            <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+        </h1>
 
-    <table class="table table-bordered table-responsive table-hover white" id="results">
+        <div id="currencyCode">
+            <label for="currencyInput" id="currencyText">
+                Currency Code
+            </label>
+            <br>
+            <input type="text" id="currencyInput">
+        </div>
+
+        <div>
+            <input type="submit" value="Send It &#128640" id="sendIt">
+        </div>
+
+        <table class="table table-bordered table-responsive table-hover white" id="dataTable">
         <tr id="tableHeaders" >
             <th>Date</th>
             <th>Pice</th>
-            <th>Volume</th>
             <th>Market Cap</th>
+            <th>Volume</th>
         </tr>
     </table>
-    <div id="dataOne" class="white">
+        <div id="dataOne" class="white">
+        </div>
     </div>
-    </div>
-
 
 </body>
 
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$( document ).ready(function() {
-});
+    $(document).ready(function () {
+    });
 
-$("#sendIt").click(function (e) {
-    var coin = $("#currencyInput").val();
-    var prices = [];
-    var volumes = [];
-    var marketcaps = [];
-    var dates = [];
-    $.ajax({
-                type: "GET",
-                url: "https://api.coingecko.com/api/v3/coins/"+ coin +"/market_chart?vs_currency=usd&days=7&interval=daily",
-                dataType: "json",
-                success: function (result,) {
-                    console.log(result);
-                    $.each(result, function (index, item) {
-                        switch(index) {
-                            case 'prices':
-                                prices.push(item);
-                                break;
-                            case 'market_caps':
-                                marketcaps.push(item);
-                                break;
-                            case 'total_volumes':
-                                volumes.push(item);
-                                break;
-                            
-                            }
-                    });
-                },
-                
-            });
-});
+    $("#sendIt").click(function (e) {
+        //$("#dataTable").html('');
+        var coin = $("#currencyInput").val();
+        var resultArray = [];
+        var allData = [];
+        var tableDate = [];
 
-function buildTables(itemArray, string){
+        $.ajax({
+            type: "GET",
+            url: "https://api.coingecko.com/api/v3/coins/" + coin + "/market_chart?vs_currency=usd&days=7&interval=daily",
+            dataType: "json",
+            success: function (result,) {
+                $.each(result, function (index, item) {
+                    resultArray.push(item);
 
-}
+                });
+
+
+                for (var i = 0; resultArray.length !== 0; i++) {
+                    var j = 0;
+                    while (j < resultArray.length) {
+                        if (i >= resultArray[j].length) {
+                            resultArray.splice(j, 1);
+                        } else {
+                            allData.push(resultArray[j][i]);
+                            j += 1;
+                        }
+                    }
+                }
+
+                for(var i = 0; i < allData.length; i+=3){
+                    var date = new Date(allData[i][0]).toLocaleDateString("en-US");
+                    // console.log(date);
+                    // console.log(allData[i][1]);
+                    console.log(allData[i][0] + 'date');
+                    console.log(allData[i][1] + 'price');
+                    console.log(allData[i+1][1] + 'market cap')
+                    console.log(allData[i+2][1] + 'volume')
+
+                    var data =
+                    '<tr>'+
+                        '<td>' + date + '</td>' +
+                        '<td> $' + allData[i][1].toFixed(2) + '</td>'+
+                        '<td>' +  allData[i+1][1] + '</td>'+
+                        '<td>' + allData[i+2][1] + '</td>'
+                    '</tr';
+                    $("#dataTable").append(data);
+                }
+            },
+
+        });
+    });
+
 </script>
